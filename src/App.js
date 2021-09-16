@@ -7,10 +7,16 @@ import NavbarMain  from './components/NavbarMain';
 import HomePage from './components/HomePage';
 import SetupForm  from './components/SetupForm';
 
+import { DAppProvider, useConnect } from './dapp/dapp'
+import { APP_NAME, NETWORK } from './dapp/default';
+
+
 
 function App() {
   return (
-    <div className="App">
+    <DAppProvider appName={APP_NAME}>
+      <React.Suspense fallback={null}>
+      <div className="App">
       <Router>
         <Route 
           path='/'
@@ -34,7 +40,9 @@ function App() {
         
       </Router>
     </div>
-  );
+    </React.Suspense>
+    </DAppProvider>
+      );
 }
 
 export default App;

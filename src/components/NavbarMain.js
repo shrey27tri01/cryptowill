@@ -1,9 +1,22 @@
-// import React from 'react'
+import React from 'react'
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import logo from '../assets/logo.svg';
 
+import { DAppProvider, useConnect } from '../dapp/dapp'
+import { APP_NAME, NETWORK } from '../dapp/default';
+
 
 const NavbarMain = () => {
+
+    const connect = useConnect()
+  const handleConnect = React.useCallback(async () => {
+    try {
+      await connect(NETWORK, { forcePermission: true })
+    } catch (err) {
+      console.error(err.message)
+    }
+  }, [connect])
+
     return (
         <Navbar bg="white" variant="dark">
             <Container>
@@ -42,7 +55,8 @@ const NavbarMain = () => {
             <Container className="justify-content-end">
                 <Nav>
                     <Nav.Link href="/login" >
-                        <Button variant="outline-secondary" style={{
+                        <Button variant="outline-secondary" 
+                            onClick={handleConnect} style={{
                             color: "black", 
                             fontFamily: 'Montserrat', 
                             fontSize: "1.2em",
