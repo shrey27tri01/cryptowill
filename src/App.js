@@ -11,8 +11,10 @@ import SetupForm  from './components/SetupForm';
 import Account from './components/Account';
 // import Interact from './components/Interact';
 
+import { DAppProvider, useConnect } from './dapp/dapp'
 import { APP_NAME, NETWORK } from './dapp/default';
-import { DAppProvider, useConnect } from './dapp/dapp';
+
+
 
 function App() {
   return (
