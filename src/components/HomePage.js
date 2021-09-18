@@ -55,7 +55,7 @@ const HomePage = () => {
                         width="900px"
                         height="700px"
                         // className="d-inline-block align-top"
-                        marginTop="1em"
+                        // marginTop="1em"
                         
                         />{' '}
         </div>
