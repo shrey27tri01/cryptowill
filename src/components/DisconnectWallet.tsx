@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import { TezosToolkit } from "@taquito/taquito";
+import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
 interface ButtonProps {
   wallet: BeaconWallet | null;
@@ -40,9 +41,21 @@ const DisconnectButton = ({
 
   return (
     <div className="buttons">
-      <button className="button" onClick={disconnectWallet}>
+      <Button 
+        onClick={disconnectWallet} 
+        variant="outline-secondary" 
+        style={{
+          color: "black", 
+          fontFamily: 'Montserrat', 
+          fontSize: "1.2em",
+          fontWeight: "bold",
+          width: "13em",
+          borderRadius: "5%" }}>
+        Disconnect wallet
+      </Button>{' '}
+      {/* <button className="button" onClick={disconnectWallet}>
         <i className="fas fa-times"></i>&nbsp; Disconnect wallet
-      </button>
+      </button> */}
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
 } from "@airgap/beacon-sdk";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import { LedgerSigner } from "@taquito/ledger-signer";
+import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
 type ButtonProps = {
   Tezos: TezosToolkit;
@@ -113,12 +114,24 @@ const ConnectButton = ({
 
   return (
     <div className="buttons">
-      <button className="button" onClick={connectWallet}>
+      {/* <button className="button" onClick={connectWallet}>
         <span>
           <i className="fas fa-wallet"></i>&nbsp; Connect with wallet
         </span>
-      </button>
-      <button className="button" disabled={loadingNano} onClick={connectNano}>
+      </button> */}
+      <Button 
+        onClick={connectWallet} 
+        variant="outline-secondary" 
+        style={{
+          color: "black", 
+          fontFamily: 'Montserrat', 
+          fontSize: "1.2em",
+          fontWeight: "bold",
+          width: "13em",
+          borderRadius: "5%" }}>
+        Connect with wallet
+      </Button>{' '}
+      {/* <button className="button" disabled={loadingNano} onClick={connectNano}>
         {loadingNano ? (
           <span>
             <i className="fas fa-spinner fa-spin"></i>&nbsp; Loading, please
@@ -129,7 +142,7 @@ const ConnectButton = ({
             <i className="fab fa-usb"></i>&nbsp; Connect with Ledger Nano
           </span>
         )}
-      </button>
+      </button> */}
     </div>
   );
 };
