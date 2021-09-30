@@ -182,8 +182,69 @@ import '../vendor/sweetalert2/dist/sweetalert2.min.css'
 import '../vendor/notyf/notyf.min.css'
 import '../vendor/volt.css'
 
+import { SECRET_KEY } from '../dapp/default';
 
 const InteractAdd = () => {
+
+
+  const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
+
+  InMemorySigner.fromSecretKey(SECRET_KEY)
+    .then((signer) => {
+      Tezos.setProvider({ signer: signer });
+      return Tezos.signer.publicKeyHash();
+    }).then((publicKeyHash) => {
+      console.log(`The public key hash associated is: ${publicKeyHash}.`);
+    }).catch((error) => 
+      console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
+    );
+
+  const [formData, setFormData] = useState({amount: ""})
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, [e.target.name]: e.target.value})
+    console.log(formData)
+
+  }
+
+  const addAmount = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    var addAmount = formData['amount'];
+
+    Tezos.wallet
+      .at('KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF')
+      .then((contract) => {
+        return contract.methods.add(addAmount).send()
+      }).then((contract) => {
+        return contract.confirmation()
+      }).then((hash) => 
+        console.log(`Operation injected: https://granada.tzstats.com/${hash}`)
+      ).catch((error) => 
+        console.log(`Error: ${JSON.stringify(error, null, 2)}`)
+      );
+
+
+    //   InMemorySigner.fromSecretKey('edskRtMMtCfvMjDETSeykhzVwQpf2DWSdRg2rSXEf6u8gtKEPBzLSqS5i8jGP2i5kmxqyTSgUkJHDhCnXhXDE2b4A14gpkXqDp')
+    // .then((theSigner) => {
+    //   Tezos.setProvider({ signer: theSigner });
+    //   //We can access the public key hash
+    //   return Tezos.signer.publicKeyHash();
+    // })
+    // .then((publicKeyHash) => {
+    //   console.log(`The public key hash associated is: ${publicKeyHash}.`);
+    // })
+    // .catch((error) => console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`));
+
+    // var address = 'tz1Lc7edHa33fKkCEw153ibmjVej4ZHQ6e4u';
+    //     var resetDays = 23;
+    //     var secretphrase = 'ed963f814c6d7a8aece8cf4e1aedca603e56e308325d8c7871b42a30ab401a32';
+
+    
+  
+
+    console.log('Sent call to contract, waiting for response...');
+  }
 
 
   useScript("../vendor/@popperjs/core/dist/umd/popper.min.js");
@@ -287,12 +348,12 @@ const InteractAdd = () => {
     <div className="col-12 col-xl-8"> 
         <div className="card card-body border-0 shadow mb-4">
             <h2 className="h5 mb-4">Add Funds to Contract</h2>
-            <form>
+            <form onSubmit={addAmount}>
                 <div className="row">
                     <div className="col-md-6 mb-3">
                         <div>
                             <label htmlFor="first_name">amount</label>
-                            <input className="form-control" id="first_name" type="text" placeholder="Amount" required />
+                            <input name="amount" className="form-control" id="first_name" type="text" placeholder="Amount" required onChange={handleFormChange} />
                         </div>
                     </div>
                     

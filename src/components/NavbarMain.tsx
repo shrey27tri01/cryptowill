@@ -32,14 +32,6 @@ const NavbarMain = () => {
   // Granadanet Increment/Decrement contract
   const contractAddress: string = "KT1K3XVNzsmur7VRgY8CAHPUENaErzzEpe4e";
 
-  const generateQrCode = (): { __html: string } => {
-    const qr = qrcode(0, "L");
-    qr.addData(publicToken || "");
-    qr.make();
-
-    return { __html: qr.createImgTag(4) };
-  };
-
 
   if (publicToken && (!userAddress || isNaN(userBalance))) {
     return (

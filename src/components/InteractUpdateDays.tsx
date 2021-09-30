@@ -18,8 +18,52 @@ import '../vendor/sweetalert2/dist/sweetalert2.min.css'
 import '../vendor/notyf/notyf.min.css'
 import '../vendor/volt.css'
 
+import { SECRET_KEY } from "../dapp/default";
+
 
 const InteractUpdateDays = () => {
+
+  const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
+
+  InMemorySigner.fromSecretKey(SECRET_KEY)
+    .then((signer) => {
+      Tezos.setProvider({ signer: signer });
+      return Tezos.signer.publicKeyHash();
+    }).then((publicKeyHash) => {
+      console.log(`The public key hash associated is: ${publicKeyHash}.`);
+    }).catch((error) => 
+      console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
+    );
+
+  const [formData, setFormData] = useState({days: ""})
+
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({...formData, [e.target.name]: e.target.value})
+    console.log(formData)
+
+  }
+
+  const updateDays = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    var nat = formData['days'];
+
+    Tezos.wallet
+      .at('KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF')
+      .then((contract) => {
+        return contract.methods.updateTime(nat).send()
+      }).then((contract) => {
+        return contract.confirmation()
+      }).then((hash) => 
+        console.log(`Operation injected: https://granada.tzstats.com/${hash}`)
+      ).catch((error) => 
+        console.log(`Error: ${JSON.stringify(error, null, 2)}`)
+      );  
+  
+
+    console.log('Sent call to contract, waiting for response...');
+  }
+
 
 
   useScript("../vendor/@popperjs/core/dist/umd/popper.min.js");
@@ -124,12 +168,12 @@ const InteractUpdateDays = () => {
                 <div className="col-12 col-xl-8"> 
                     <div className="card card-body border-0 shadow mb-4">
                         <h2 className="h5 mb-4">Update time interval</h2>
-                        <form>
+                        <form onSubmit={updateDays}>
                             <div className="row">
                                 <div className="col-md-6 mb-3">
                                     <div>
                                         <label htmlFor="first_name">No of days</label>
-                                        <input className="form-control" id="first_name" type="text" placeholder="Number of days" required />
+                                        <input name="days" className="form-control" id="first_name" type="text" placeholder="Number of days" required onChange={handleFormChange}/>
                                     </div>
                                 </div>
                                 
