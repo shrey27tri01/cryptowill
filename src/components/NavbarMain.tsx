@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { TezosToolkit } from "@taquito/taquito";
+import { BeaconWallet } from "@taquito/beacon-wallet";
+
 import { InMemorySigner } from '@taquito/signer';
 // import "./App.css";
 import ConnectButton from "./ConnectWallet";
@@ -12,6 +14,11 @@ import logo from '../assets/logo.svg';
 
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 
+import {
+  NetworkType,
+  BeaconEvent,
+  defaultEventCallbacks
+} from "@airgap/beacon-sdk";
 
 
 
@@ -31,6 +38,18 @@ const NavbarMain = () => {
 
   // Granadanet Increment/Decrement contract
   const contractAddress: string = "KT1K3XVNzsmur7VRgY8CAHPUENaErzzEpe4e";
+
+  const loginWallet = new BeaconWallet({
+    name: 'cryptowill',
+    preferredNetwork: NetworkType.GRANADANET,
+    eventHandlers: {
+        PERMISSION_REQUEST_SUCCESS: {
+        handler: async (data: any) => {
+            console.log('permission data:', data);
+        },
+        },
+    },
+    });
 
 
   if (publicToken && (!userAddress || isNaN(userBalance))) {
@@ -106,7 +125,7 @@ const NavbarMain = () => {
       </div>
     );
   } else if (userAddress && !isNaN(userBalance)) {
-
+    
 
 
 
@@ -300,6 +319,13 @@ const NavbarMain = () => {
                             fontSize: "1.2em",
                             fontWeight: "bold" }}
                         >About the developers
+                    </Nav.Link>
+                    <Nav.Link href="/interact/add" style={{
+                            color: "black", 
+                            fontFamily: 'Montserrat', 
+                            fontSize: "1.2em",
+                            fontWeight: "bold" }}
+                        >Interact
                     </Nav.Link>
                 </Nav>
             </Container>

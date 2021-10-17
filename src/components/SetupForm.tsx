@@ -1,11 +1,6 @@
 import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { TezosToolkit } from "@taquito/taquito";
-import { BeaconWallet } from "@taquito/beacon-wallet";
-import {
-  NetworkType,
-  BeaconEvent,
-  defaultEventCallbacks
-} from "@airgap/beacon-sdk";
+
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import { LedgerSigner } from "@taquito/ledger-signer";
 
@@ -17,23 +12,47 @@ import NavbarMain from "./NavbarMain"
 
 import { SECRET_KEY } from '../dapp/default';
 
+import { BeaconWallet } from "@taquito/beacon-wallet";
+
+import {
+  NetworkType,
+  BeaconEvent,
+  defaultEventCallbacks
+} from "@airgap/beacon-sdk";
+
 
 const SetupForm = () => {
 
 
-  const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
+  // const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
 
-  InMemorySigner.fromSecretKey(SECRET_KEY)
-    .then((signer) => {
-      Tezos.setProvider({ signer: signer });
-      return Tezos.signer.publicKeyHash();
-    }).then((publicKeyHash) => {
-      console.log(`The public key hash associated is: ${publicKeyHash}.`);
-    }).catch((error) => 
-      alert(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
-    );
+  // InMemorySigner.fromSecretKey(SECRET_KEY)  
+  //   .then((signer) => {
+  //     Tezos.setProvider({ signer: signer });
+  //     return Tezos.signer.publicKeyHash();
+  //   }).then((publicKeyHash) => {
+  //     console.log(`The public key hash associated is: ${publicKeyHash}.`);
+  //   }).catch((error) => 
+  //     alert(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
+  //   );
 
-  const [formData, setFormData] = useState({receiverAddress: "", nofDays: "", secretKey: ""})
+  const Tezos = new TezosToolkit('https://api.tez.ie/rpc/granadanet');
+
+    const loginWallet = new BeaconWallet({
+    name: 'cryptowill',
+    preferredNetwork: NetworkType.GRANADANET,
+    eventHandlers: {
+        PERMISSION_REQUEST_SUCCESS: {
+        handler: async (data: any) => {
+            console.log('permission data:', data);
+        },
+        },
+    },
+    });
+
+    Tezos.setWalletProvider(loginWallet);
+
+  const [formData, setFormData] = useState({receiverAddress: "", nofDays: "", secretKey: "", amount: ""})
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({...formData, [e.target.name]: e.target.value})
@@ -47,17 +66,19 @@ const SetupForm = () => {
     var address = formData['receiverAddress'];
     var resetDays = formData['nofDays'];
     var secretphrase = formData['secretKey'];
+    var amount = Number(formData['amount']);
+
 
     Tezos.wallet
       .at('KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF')
       .then((contract) => {
-        return contract.methods.originate(address, resetDays, secretphrase).send()
+        return contract.methods.originate(address, resetDays, secretphrase).send({amount: amount})
       }).then((contract) => {
         return contract.confirmation()
       }).then((hash) => 
         console.log(`Operation injected: https://granada.tzstats.com/${hash}`)
       ).catch((error) => 
-        alert(`Error: ${JSON.stringify(error, null, 2)}`)
+        console.log(`Error: ${JSON.stringify(error, null, 2)}`)
       );
 
 
@@ -79,7 +100,7 @@ const SetupForm = () => {
     
   
 
-    console.log('yoyoyo');
+    console.log('Sent call to contract, waiting for response...');
   }
   
 
@@ -147,7 +168,7 @@ const SetupForm = () => {
             <Col sm={4}>
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Amount (in XTZ)</Form.Label>
-                <Form.Control type="number" name="amount" step="any" placeholder="Amount" style={{width: "30em", borderRadius: "50px 50px 50px 50px"}} />
+                <Form.Control type="number" onChange={handleFormChange} name="amount" step="any" placeholder="Amount" style={{width: "30em", borderRadius: "50px 50px 50px 50px"}} />
                 {/* <Form.Text className="text-muted">
                   We'll never share your email with anyone else.
                 </Form.Text> */}

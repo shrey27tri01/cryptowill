@@ -1,176 +1,11 @@
 
-// import React, { useState } from "react";
-// import SimpleBar from 'simplebar-react';
-// import { useLocation } from "react-router-dom";
-// import { CSSTransition } from 'react-transition-group';
-// // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// // import { faBook, faBoxOpen, faChartPie, faCog, faFileAlt, faHandHoldingUsd, faSignOutAlt, faTable, faTimes, faCalendarAlt, faMapPin, faInbox, faRocket } from "@fortawesome/free-solid-svg-icons";
-// import { Nav, Badge, Image, Button, Dropdown, Accordion, Navbar } from '@themesberg/react-bootstrap';
-// import { Link } from 'react-router-dom';
-
-// // import ThemesbergLogo from "../assets/img/themesberg.svg";
-// // import ReactHero from "../assets/img/technologies/react-hero-logo.svg";
-// // import ProfilePicture from "../assets/img/team/profile-picture-3.jpg";
-
-// export default (props = {}) => {
-//   const location = useLocation();
-//   const { pathname } = location;
-//   const [show, setShow] = useState(false);
-//   const showclassName = show ? "show" : "";
-
-//   const onCollapse = () => setShow(!show);
-
-//   const CollapsableNavItem = (props) => {
-//     const { eventKey, title, icon, children = null } = props;
-//     const defaultKey = pathname.indexOf(eventKey) !== -1 ? eventKey : "";
-
-//     return (
-//       <Accordion as={Nav.Item} defaultActiveKey={defaultKey}>
-//         <Accordion.Item eventKey={eventKey}>
-//           <Accordion.Button as={Nav.Link} classNameName="d-flex justify-content-between align-items-center">
-//             <span>
-//               <span classNameName="sidebar-icon"> </span>
-//               <span classNameName="sidebar-text">{title}</span>
-//             </span>
-//           </Accordion.Button>
-//           <Accordion.Body classNameName="multi-level">
-//             <Nav classNameName="flex-column">
-//               {children}
-//             </Nav>
-//           </Accordion.Body>
-//         </Accordion.Item>
-//       </Accordion>
-//     );
-//   };
-
-//   const NavItem = (props) => {
-//     const { title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary" } = props;
-//     const classNameNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
-//     const navItemclassNameName = link === pathname ? "active" : "";
-//     const linkProps = external ? { href: link } : { as: Link, to: link };
-
-//     return (
-//       <Nav.Item classNameName={navItemclassNameName} onClick={() => setShow(false)}>
-//         <Nav.Link {...linkProps} target={target} classNameName={classNameNames}>
-//           <span>
-//             {icon ? <span classNameName="sidebar-icon"> </span> : null}
-//             {image ? <Image src={image} width={20} height={20} classNameName="sidebar-icon svg-icon" /> : null}
-
-//             <span classNameName="sidebar-text">{title}</span>
-//           </span>
-//           {badgeText ? (
-//             <Badge pill bg={badgeBg} text={badgeColor} classNameName="badge-md notification-count ms-2">{badgeText}</Badge>
-//           ) : null}
-//         </Nav.Link>
-//       </Nav.Item>
-//     );
-//   };
-
-//   return (
-//     <>
-//       <Navbar expand={false} collapseOnSelect variant="dark" classNameName="navbar-theme-primary px-4 d-md-none">
-//         <Navbar.Brand classNameName="me-lg-5" as={Link}>
-//           <Image classNameName="navbar-brand-light" />
-//         </Navbar.Brand>
-//         <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
-//           <span classNameName="navbar-toggler-icon" />
-//         </Navbar.Toggle>
-//       </Navbar>
-//       <CSSTransition timeout={300} in={show} classNameNames="sidebar-transition">
-//         <SimpleBar classNameName={`collapse ${showclassName} sidebar d-md-block bg-primary text-white`}>
-//           <div classNameName="sidebar-inner px-4 pt-3">
-//             <div classNameName="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
-//               <div classNameName="d-flex align-items-center">
-//                 <div classNameName="user-avatar lg-avatar me-4">
-//                   {/* <Image src={ProfilePicture} classNameName="card-img-top rounded-circle border-white" /> */}
-//                 </div>
-//                 <div classNameName="d-block">
-//                   <h6>Hi, Jane</h6>
-//                   <Button as={Link} variant="secondary" size="xs" classNameName="text-dark">
-//                      Sign Out
-//                   </Button>
-//                 </div>
-//               </div>
-//               <Nav.Link classNameName="collapse-close d-md-none" onClick={onCollapse}>
-                
-//               </Nav.Link>
-//             </div>
-//             <Nav classNameName="flex-column pt-3 pt-md-0">
-//               {/* <NavItem title="Volt React" image={ReactHero} /> */}
-
-//               <NavItem title="Overview"/>
-//               <NavItem external title="Messages" link="https://demo.themesberg.com/volt-pro-react/#/messages" target="_blank" badgeText="Pro" />
-//               <NavItem title="Transactions"   />
-//               <NavItem title="Settings"  />
-//               <NavItem external title="Calendar" link="https://demo.themesberg.com/volt-pro-react/#/calendar" target="_blank" badgeText="Pro"  />
-//               <NavItem external title="Map" link="https://demo.themesberg.com/volt-pro-react/#/map" target="_blank" badgeText="Pro" />
-
-//               <CollapsableNavItem eventKey="tables/" title="Tables" >
-//                 <NavItem title="Bootstrap Table"  />
-//               </CollapsableNavItem>
-
-//               <CollapsableNavItem eventKey="examples/" title="Page Examples" >
-//                 <NavItem title="Sign In"  />
-//                 <NavItem title="Sign Up" />
-//                 <NavItem title="Forgot password"/>
-//                 <NavItem title="Reset password" />
-//                 <NavItem title="Lock" />
-//                 <NavItem title="404 Not Found"  />
-//                 <NavItem title="500 Server Error" />
-//               </CollapsableNavItem>
-
-//               <NavItem external title="Plugins" link="https://demo.themesberg.com/volt-pro-react/#/plugins/datatable" target="_blank" badgeText="Pro"  />
-
-//               <Dropdown.Divider classNameName="my-3 border-indigo" />
-
-//               <CollapsableNavItem eventKey="documentation/" title="Getting Started" >
-//                 <NavItem title="Overview"  />
-//                 <NavItem title="Download"  />
-//                 <NavItem title="Quick Start"  />
-//                 <NavItem title="License" />
-//                 <NavItem title="Folder Structure"  />
-//                 <NavItem title="Build Tools" />
-//                 <NavItem title="Changelog"  />
-//               </CollapsableNavItem>
-//               <CollapsableNavItem eventKey="components/" title="Components" >
-//                 <NavItem title="Accordion" />
-//                 <NavItem title="Alerts" />
-//                 <NavItem title="Badges"  />
-//                 <NavItem external title="Widgets" link="https://demo.themesberg.com/volt-pro-react/#/components/widgets" target="_blank" badgeText="Pro" />
-//                 <NavItem title="Breadcrumbs"  />
-//                 <NavItem title="Buttons" />
-//                 <NavItem title="Forms" />
-//                 <NavItem title="Modals"  />
-//                 <NavItem title="Navbars"  />
-//                 <NavItem title="Navs" />
-//                 <NavItem title="Pagination"  />
-//                 <NavItem title="Popovers" />
-//                 <NavItem title="Progress" />
-//                 <NavItem title="Tables"  />
-//                 <NavItem title="Tabs"  />
-//                 <NavItem title="Toasts"  />
-//                 <NavItem title="Tooltips"  />
-//               </CollapsableNavItem>
-//               <NavItem external title="Themesberg" link="https://themesberg.com" target="_blank"  />
-//               <Button as={Link}  variant="secondary" classNameName="upgrade-to-pro"> Upgrade to Pro</Button>
-//             </Nav>
-//           </div>
-//         </SimpleBar>
-//       </CSSTransition>
-//     </>
-//   );
-// };
-
-
 import React, { useState, useEffect } from "react";
 import { TezosToolkit } from "@taquito/taquito";
 import { InMemorySigner } from '@taquito/signer';
+import { BeaconWallet } from "@taquito/beacon-wallet";
 // import "./App.css";
-import ConnectButton from "./ConnectWallet";
-import DisconnectButton from "./DisconnectWallet";
-import qrcode from "qrcode-generator";
-import UpdateContract from "./UpdateContract";
-import Transfers from "./Transfers";
+
+import NavbarMain from "./NavbarMain";
 
 import logo from '../assets/logo.svg';
 
@@ -184,20 +19,45 @@ import '../vendor/volt.css'
 
 import { SECRET_KEY } from '../dapp/default';
 
+import {
+  NetworkType,
+  BeaconEvent,
+  defaultEventCallbacks
+} from "@airgap/beacon-sdk";
+
 const InteractAdd = () => {
 
 
-  const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
+  // const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
 
-  InMemorySigner.fromSecretKey(SECRET_KEY)
-    .then((signer) => {
-      Tezos.setProvider({ signer: signer });
-      return Tezos.signer.publicKeyHash();
-    }).then((publicKeyHash) => {
-      console.log(`The public key hash associated is: ${publicKeyHash}.`);
-    }).catch((error) => 
-      console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
-    );
+  // InMemorySigner.fromSecretKey(SECRET_KEY)
+  //   .then((signer) => {
+  //     Tezos.setProvider({ signer: signer });
+  //     return Tezos.signer.publicKeyHash();
+  //   }).then((publicKeyHash) => {
+  //     console.log(`The public key hash associated is: ${publicKeyHash}.`);
+  //   }).catch((error) => 
+  //     console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
+  //   );
+
+  const Tezos = new TezosToolkit('https://api.tez.ie/rpc/granadanet');
+
+    const loginWallet = new BeaconWallet({
+    name: 'cryptowill',
+    preferredNetwork: NetworkType.GRANADANET,
+    eventHandlers: {
+        PERMISSION_REQUEST_SUCCESS: {
+        handler: async (data: any) => {
+            console.log('permission data:', data);
+        },
+        },
+    },
+    });
+
+    Tezos.setWalletProvider(loginWallet);
+
+    // var newwallet = NavbarMain.
+
 
   const [formData, setFormData] = useState({amount: ""})
 
@@ -210,12 +70,13 @@ const InteractAdd = () => {
   const addAmount = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    var addAmount = formData['amount'];
+    var addAmount = Number(formData['amount']);
 
     Tezos.wallet
       .at('KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF')
       .then((contract) => {
-        return contract.methods.add(addAmount).send()
+        // return contract.methods.add().send({amount: addAmount});
+        return contract.methods.add([['unit']]).send({amount: addAmount, mutez: true});
       }).then((contract) => {
         return contract.confirmation()
       }).then((hash) => 
@@ -223,6 +84,8 @@ const InteractAdd = () => {
       ).catch((error) => 
         console.log(`Error: ${JSON.stringify(error, null, 2)}`)
       );
+
+      // -------------------------------------
 
 
     //   InMemorySigner.fromSecretKey('edskRtMMtCfvMjDETSeykhzVwQpf2DWSdRg2rSXEf6u8gtKEPBzLSqS5i8jGP2i5kmxqyTSgUkJHDhCnXhXDE2b4A14gpkXqDp')

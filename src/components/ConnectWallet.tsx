@@ -66,23 +66,6 @@ const ConnectButton = ({
     }
   };
 
-  const connectNano = async (): Promise<void> => {
-    try {
-      setLoadingNano(true);
-      const transport = await TransportU2F.create();
-      const ledgerSigner = new LedgerSigner(transport, "44'/1729'/0'/0'", true);
-
-      Tezos.setSignerProvider(ledgerSigner);
-
-      //Get the public key and the public key hash from the Ledger
-      const userAddress = await Tezos.signer.publicKeyHash();
-      await setup(userAddress);
-    } catch (error) {
-      console.log("Error!", error);
-      setLoadingNano(false);
-    }
-  };
-
   useEffect(() => {
     (async () => {
       // creates a wallet instance
@@ -99,6 +82,18 @@ const ConnectButton = ({
             handler: data => setPublicToken(data.publicKey)
           }
         }
+        
+        // --------------------------------------------------
+
+        // name: 'cryptowill',
+        // preferredNetwork: NetworkType.GRANADANET,
+        // eventHandlers: {
+        //   PERMISSION_REQUEST_SUCCESS: {
+        //     handler: async (data: any) => {
+        //         console.log('permission data:', data);
+        //     },
+        //   },
+        // },
       });
       Tezos.setWalletProvider(wallet);
       setWallet(wallet);

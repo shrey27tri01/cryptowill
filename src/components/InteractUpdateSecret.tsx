@@ -20,20 +20,46 @@ import '../vendor/volt.css'
 
 import { SECRET_KEY } from "../dapp/default";
 
+import { BeaconWallet } from "@taquito/beacon-wallet";
+
+import {
+  NetworkType,
+  BeaconEvent,
+  defaultEventCallbacks
+} from "@airgap/beacon-sdk";
+
 
 const InteractUpdateSecret = () => {
 
-  const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
+  // const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
 
-  InMemorySigner.fromSecretKey(SECRET_KEY)
-    .then((signer) => {
-      Tezos.setProvider({ signer: signer });
-      return Tezos.signer.publicKeyHash();
-    }).then((publicKeyHash) => {
-      console.log(`The public key hash associated is: ${publicKeyHash}.`);
-    }).catch((error) => 
-      console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
-    );
+  // InMemorySigner.fromSecretKey(SECRET_KEY)
+  //   .then((signer) => {
+  //     Tezos.setProvider({ signer: signer });
+  //     return Tezos.signer.publicKeyHash();
+  //   }).then((publicKeyHash) => {
+  //     console.log(`The public key hash associated is: ${publicKeyHash}.`);
+  //   }).catch((error) => 
+  //     console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
+  //   );
+
+  const Tezos = new TezosToolkit('https://api.tez.ie/rpc/granadanet');
+
+    const loginWallet = new BeaconWallet({
+    name: 'cryptowill',
+    preferredNetwork: NetworkType.GRANADANET,
+    eventHandlers: {
+        PERMISSION_REQUEST_SUCCESS: {
+        handler: async (data: any) => {
+            console.log('permission data:', data);
+        },
+        },
+    },
+    });
+
+    Tezos.setWalletProvider(loginWallet);
+
+
 
   const [formData, setFormData] = useState({secret: ""})
 

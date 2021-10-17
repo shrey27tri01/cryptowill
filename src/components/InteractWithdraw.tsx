@@ -20,20 +20,45 @@ import '../vendor/volt.css'
 
 import { SECRET_KEY } from '../dapp/default';
 
+import { BeaconWallet } from "@taquito/beacon-wallet";
+
+import {
+  NetworkType,
+  BeaconEvent,
+  defaultEventCallbacks
+} from "@airgap/beacon-sdk";
+
+
 const InteractWithdraw = () => {
 
 
-  const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
+  // const Tezos = new TezosToolkit('https://granadanet.api.tez.ie');
 
-  InMemorySigner.fromSecretKey(SECRET_KEY)
-    .then((signer) => {
-      Tezos.setProvider({ signer: signer });
-      return Tezos.signer.publicKeyHash();
-    }).then((publicKeyHash) => {
-      console.log(`The public key hash associated is: ${publicKeyHash}.`);
-    }).catch((error) => 
-      console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
-    );
+  // InMemorySigner.fromSecretKey(SECRET_KEY)
+  //   .then((signer) => {
+  //     Tezos.setProvider({ signer: signer });
+  //     return Tezos.signer.publicKeyHash();
+  //   }).then((publicKeyHash) => {
+  //     console.log(`The public key hash associated is: ${publicKeyHash}.`);
+  //   }).catch((error) => 
+  //     console.log(`Error: ${error} ${JSON.stringify(error, null, 2)}`)
+  //   );
+
+  const Tezos = new TezosToolkit('https://api.tez.ie/rpc/granadanet');
+
+    const loginWallet = new BeaconWallet({
+    name: 'cryptowill',
+    preferredNetwork: NetworkType.GRANADANET,
+    eventHandlers: {
+        PERMISSION_REQUEST_SUCCESS: {
+        handler: async (data: any) => {
+            console.log('permission data:', data);
+        },
+        },
+    },
+    });
+
+    Tezos.setWalletProvider(loginWallet);
 
   const [formData, setFormData] = useState({amount: ""})
 
@@ -51,7 +76,7 @@ const InteractWithdraw = () => {
     Tezos.wallet
       .at('KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF')
       .then((contract) => {
-        return contract.methods.withdraw(withdrawAmount).send()
+        return contract.methods.withdraw(withdrawAmount).send({mutez: true})
       }).then((contract) => {
         return contract.confirmation()
       }).then((hash) => 
@@ -171,7 +196,7 @@ const InteractWithdraw = () => {
                             <div className="row">
                                 <div className="col-md-6 mb-3">
                                     <div>
-                                        <label htmlFor="first_name">Withdrawal amount</label>
+                                        <label htmlFor="first_name">Withdrawal amount (in mutez)</label>
                                         <input name="amount" className="form-control" id="first_name" type="text" placeholder="Amount" required onChange={handleFormChange} />
                                     </div>
                                 </div>
