@@ -39,21 +39,21 @@ const HomePage = () => {
             fontWeight: "bold",
             textAlign: "left"
         }}>
-            Create your digital Will
+            Claim your Will
         </div>
         <div style={{marginTop: "1em"}}>
             <Form>
                 <Row className="align-items-center">
-                    <Col sm={6} className="my-1">
+                    {/* <Col sm={6} className="my-1">
                     <Form.Label htmlFor="inlineFormInputName" visuallyHidden>
                         search
                     </Form.Label>
                     <Form.Control id="inlineFormInputName" placeholder="Search by Address" />
-                    </Col>
+                    </Col> */}
                  
                     
                     <Col sm={3} className="my-1">
-                    <Button variant="danger"  style={{width: "10em", borderRadius: "5%"}}>Search</Button>
+                    <Button href='/claim' variant="danger"  style={{width: "10em", borderRadius: "5%"}}>Claim</Button>
                     </Col>
                 </Row>
             </Form>

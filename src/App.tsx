@@ -20,6 +20,8 @@ import NavbarMain  from './components/NavbarMain';
 import HomePage from './components/HomePage';
 import SetupForm  from './components/SetupForm';
 // import Account from './components/Account';
+import ClaimPage from "./components/ClaimPage";
+import ProfilePage from "./components/ProfilePage";
 import InteractAdd from './components/InteractAdd';
 import InteractWithdraw from "./components/InteractWithdraw";
 import InteractUpdateDays from "./components/InteractUpdateDays";
@@ -54,6 +56,18 @@ const App = () => {
                   <NavbarMain />
                   {/* <Account /> */}
                 </Route>
+            <Route
+              path='/claim'
+              >
+                  <NavbarMain />
+                  <ClaimPage />
+            </Route>
+            <Route
+              path='/profile'
+              >
+                  {/* <NavbarMain /> */}
+                  <ProfilePage />
+            </Route>
             <Route
               path='/interact/add'
               >

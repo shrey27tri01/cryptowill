@@ -20,6 +20,7 @@ import {
   defaultEventCallbacks
 } from "@airgap/beacon-sdk";
 
+import CryptoJS from "crypto-js";
 
 const SetupForm = () => {
 
@@ -67,6 +68,16 @@ const SetupForm = () => {
     var resetDays = formData['nofDays'];
     var secretphrase = formData['secretKey'];
     var amount = Number(formData['amount']);
+
+    // String -> Hex -> Bytes (needed)
+    
+    console.log(secretphrase)
+    
+    var hexvalue = CryptoJS.enc.Hex.parse(secretphrase)
+
+    console.log(hexvalue)
+
+    console.log(CryptoJS.SHA256(hexvalue).toString(CryptoJS.enc.Hex))
 
 
     Tezos.wallet

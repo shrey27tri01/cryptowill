@@ -51,6 +51,8 @@ const NavbarMain = () => {
     },
     });
 
+    Tezos.setWalletProvider(loginWallet);
+
 
   if (publicToken && (!userAddress || isNaN(userBalance))) {
     return (
