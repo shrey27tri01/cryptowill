@@ -24,6 +24,7 @@
     "bootstrap": "^5.1.1",
     "constate": "^3.3.0",
     "crypto-js": "^4.1.1",
+    "eosjs-ecc": "^4.0.7",
     "netlify-cli": "^6.13.2",
     "qrcode-generator": "^1.4.4",
     "react": "^17.0.1",

@@ -58,10 +58,21 @@ const ClaimPage = () => {
         var ownerAddress = formData['address'];
         var secretKey = formData['secretKey'];
 
+        var phraseHexBytes = ""
+
+        for (var i = 0; i < secretKey.length; i++) {
+            var s = secretKey.charCodeAt(i).toString(16);
+            while (s.length < 2) {
+                s = '0' + s;
+            }
+            phraseHexBytes += s;
+        }
+
+
         Tezos.wallet
         .at('KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF')
         .then((contract) => {
-            return contract.methods.transfer(ownerAddress, secretKey).send();
+            return contract.methods.transfer(ownerAddress, phraseHexBytes).send();
         }).then((contract) => {
             return contract.confirmation()
         }).then((hash) => 

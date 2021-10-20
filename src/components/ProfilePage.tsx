@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TezosToolkit } from "@taquito/taquito";
 import { InMemorySigner } from '@taquito/signer';
 // import "./App.css";
@@ -23,9 +23,10 @@ import {
     BeaconEvent,
     defaultEventCallbacks
   } from "@airgap/beacon-sdk";
+import { type } from "os";
   
 
-const ProfilePage = () => {
+const ProfilePage =  () => {
 
 
     // Delete Will
@@ -101,21 +102,67 @@ const ProfilePage = () => {
 
   // ------------------
 
-    var data;
 
-    window.onload = async function userData() {
+    const [data, setData] = useState({
+      amount: "Loading...",
+    endTime: "Loading...",
+    hash: "Loading...",
+    owner: "Loading...",
+    reciever: "Loading...",
+    resetDays: "Loading..."});
+
+
+    useEffect(() => {
+      const fetchData = async () => {
         var contract = await Tezos.contract.at("KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF")
         var storage: {wills?: any} = await contract.storage()
-        let bigMapDetail = await storage.wills.get("tz1QsX3SQiEnqLCuKV4rWbQfUT9rBzKeLkpN")
+        var publicAddress = await loginWallet.getPKH()
+        let bigMapDetail = await storage.wills.get(publicAddress)
+        
+        if (bigMapDetail === undefined) {
+          setData({
+            amount: "No Will Found",
+            endTime: "No Will Found",
+            hash: "No Will Found",
+            owner: "No Will Found",
+            reciever: "No Will Found",
+            resetDays: "No Will Found"
+          });
+        } else {
+          setData(bigMapDetail);
+        }
+        
 
-        data = bigMapDetail
+        // console.log(contract)
+        // console.log(storage)
+        // console.log(bigMapDetail)
+        // console.log(typeof(bigMapDetail))
 
-        console.log(contract)
-        console.log(storage)
-        console.log(bigMapDetail)
+        // console.log(bigMapDetail.owner)
+        // console.log(bigMapDetail.amount.toString())
 
-        console.log(bigMapDetail.owner)
-    }
+        // console.log(publicAddress)
+
+
+      };
+   
+      fetchData();
+    }, []);
+
+
+    // window.onload = async function userData() {
+    //     var contract = await Tezos.contract.at("KT1HVaSGGszQnwLmC5ehQrTF6pUtHE3zTZnF")
+    //     var storage: {wills?: any} = await contract.storage()
+    //     let bigMapDetail = await storage.wills.get("tz1QsX3SQiEnqLCuKV4rWbQfUT9rBzKeLkpN")
+
+
+    //     console.log(contract)
+    //     console.log(storage)
+    //     console.log(bigMapDetail)
+    //     console.log(typeof(bigMapDetail))
+
+    //     console.log(bigMapDetail.owner)
+    // }
 
     
 
@@ -150,7 +197,7 @@ const ProfilePage = () => {
           <span className="mt-1 ms-1 sidebar-text">Interact</span>
         </a>
       </li>
-      <li className="nav-item active">
+      <li className="nav-item">
         <a href="/interact/add" className="nav-link">
           <span className="sidebar-icon">
             <svg className="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path><path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path></svg>
@@ -195,7 +242,7 @@ const ProfilePage = () => {
         </a>
       </li>
       <li role="separator" className="dropdown-divider mt-4 mb-3 border-white"></li>
-      <li className="nav-item">
+      <li className="nav-item active">
         <a href="/profile" className="nav-link d-flex align-items-center">
           <span className="sidebar-icon">
             <svg className="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
@@ -235,14 +282,17 @@ const ProfilePage = () => {
                                     <div>
                                         <label htmlFor="first_name">Owner</label>
                                         {/* <input className="form-control" id="first_name" type="text" placeholder="Enter your first name" required /> */}
-                                        <p className="small pe-4">{}</p>
+                                        <p className="small pe-4">{data.owner}</p>
+                                        {/* {data.willsNew.map(item => (
+                                          <p className="small pe-4">{item['owner']}</p>
+                                          ))} */}
                                     </div>
                                 </div>
                                 <div className="col-md-6 mb-3">
                                     <div>
                                         <label htmlFor="last_name">Receiver</label>
                                         {/* <input className="form-control" id="last_name" type="text" placeholder="Also your last name" required /> */}
-                                        <p className="small pe-4">Get Rocket news, announcements, and product updates</p>
+                                        <p className="small pe-4">{data.reciever}</p>
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +302,7 @@ const ProfilePage = () => {
                                     <div className="input-group">
 
                                         {/* <input data-datepicker="" className="form-control" id="birthday" type="text" placeholder="dd/mm/yyyy" required />                                                */}
-                                        <p className="small pe-4">Get Rocket news, announcements, and product updates</p>
+                                        <p className="small pe-4">{data.endTime}</p>
                                      </div>
                                 </div>
                                 <div className="col-md-6 mb-3">
@@ -260,7 +310,7 @@ const ProfilePage = () => {
                                     <div className="input-group">
 
                                         {/* <input data-datepicker="" className="form-control" id="birthday" type="text" placeholder="dd/mm/yyyy" required />                                                */}
-                                        <p className="small pe-4">Get Rocket news, announcements, and product updates</p>
+                                        <p className="small pe-4">{data.resetDays.toString()}</p>
                                      </div>
                                 </div>
                             </div>
@@ -268,7 +318,7 @@ const ProfilePage = () => {
                                 <div className="col-md-6 mb-3">
                                     <div className="form-group">
                                         <label htmlFor="email">Amount</label>
-                                        <p className="small pe-4">Get Rocket news, announcements, and product updates</p>
+                                        <p className="small pe-4">{data.amount.toString()}</p>
                                     </div>
                                 </div>
                                 
