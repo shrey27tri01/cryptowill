@@ -1,4 +1,34 @@
-# Getting Started with Create React App
+## CryptoWill
+
+### The problem CryptoWill solves
+
+In this developing world of blockchain, we are identified as our keys which is amazing, but…
+
+- What if life takes a turn?
+- What if you forget your private key and seed phrase?
+- What if there is a fire and your computer which stored the keys dies?
+- What if in an accident you suffer amnesia? Or worst case: what if you face a sudden demise?
+
+CryptoWill provides a decentralized alternative to a traditional “will” and also solves the problem of dormant cryptocurrencies!
+
+It lets users store their cryptocurrencies in a decentralized “will”, so as to prevent their holdings from becoming dormant in case of loss of private keys or user demise
+
+### Challenges we ran into
+
+We ran into a lot of issues starting with the smart contract on SmartPy during testing, debugging, and the development itself. We got over them through the help of an awesome community of Tezos developers and help from our mentor Mr. Soumya. We also joined the Telegram group of SmartPy to get solutions to errors
+
+Another major issue we ran into is the front-end integration which was tricky at first and took a learning curve but was easily solved with Taquitojs docs and other documentation we found online.
+
+### Demo
+
+A demo video can be found at https://youtu.be/XWSW8O25SZY <br />
+The portal is deployed at https://cryptowill.netlify.app/
+
+**NOTE**: The project is in early alpha, so you will encounter a lot of bugs on usage. Kindly raise an issue if you feel so.
+
+
+
+<!-- # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -68,3 +98,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `yarn build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+ -->
